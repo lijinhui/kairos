@@ -65,6 +65,10 @@ class MongoBackend(Timeseries):
         self._client[interval].ensure_index(
           [('expire_from',ASCENDING)], expireAfterSeconds=config['expire'], background=True )
 
+  @classmethod
+  def url_parse(self, url):
+    return None
+
   # A very ugly way to capture histogram updates
   @property
   def _single_value(self):

@@ -39,6 +39,10 @@ class RedisBackend(Timeseries):
 
     super(RedisBackend,self).__init__( client, **kwargs )
 
+  @classmethod
+  def url_parse(self, url):
+    return None
+
   def _calc_keys(self, config, name, timestamp):
     '''
     Calculate keys given a stat name and timestamp.

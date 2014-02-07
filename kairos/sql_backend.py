@@ -78,6 +78,10 @@ class SqlBackend(Timeseries):
         return SqlGauge.__new__(SqlGauge, *args, **kwargs)
     return Timeseries.__new__(cls, *args, **kwargs)
 
+  @classmethod
+  def url_parse(self, url):
+    return None
+
   def __init__(self, client, **kwargs):
     '''
     Initialize the sql backend after timeseries has processed the configuration.
