@@ -10,6 +10,8 @@ import operator
 import sys
 import time
 import re
+from urlparse import *
+from redis import Redis
 
 class RedisBackend(Timeseries):
   '''
@@ -40,8 +42,10 @@ class RedisBackend(Timeseries):
     super(RedisBackend,self).__init__( client, **kwargs )
 
   @classmethod
-  def url_parse(self, url):
-    return None
+  def url_parse(self, url, **kwargs):
+    location = urlparse(url)
+    if location.scheme == 'redis':
+      return Redis.from_url( url, **kwargs )
 
   def _calc_keys(self, config, name, timestamp):
     '''

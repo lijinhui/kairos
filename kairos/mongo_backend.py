@@ -13,6 +13,7 @@ import re
 import pymongo
 from pymongo import ASCENDING, DESCENDING
 from datetime import datetime
+from urlparse import *
 
 class MongoBackend(Timeseries):
   '''
@@ -39,6 +40,7 @@ class MongoBackend(Timeseries):
     if isinstance(client, pymongo.MongoClient):
       client = client['kairos']
     elif not isinstance(client, pymongo.database.Database):
+      print "NOOOT ", client
       raise TypeError('Mongo handle must be MongoClient or database instance')
 
     self._escape_character = kwargs.get('escape_character', u"\U0000FFFF")
@@ -66,8 +68,20 @@ class MongoBackend(Timeseries):
           [('expire_from',ASCENDING)], expireAfterSeconds=config['expire'], background=True )
 
   @classmethod
-  def url_parse(self, url):
-    return None
+  def url_parse(self, url, **kwargs):
+    location = urlparse(url)
+    if location.scheme == 'mongodb':
+      client = pymongo.MongoClient( url, **kwargs )
+
+      # Stupid urlparse has a "does this scheme use queries" registrar,
+      # so copy that work here. Then pull out the optional database name.
+      path = location.path
+      if '?' in path:
+        path = path.split('?',1)[0]
+      path = re.search('[/]*([\w]*)', path).groups()[0] or kwargs.get('database','kairos')
+
+      print "MONGO FROM ", client, client[path]
+      return client[ path ]
 
   # A very ugly way to capture histogram updates
   @property

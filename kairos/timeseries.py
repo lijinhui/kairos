@@ -231,13 +231,22 @@ class Timeseries(object):
 
   def __new__(cls, client, **kwargs):
     if cls==Timeseries:
+      if isinstance(client, (str,unicode)):
+        for backend in BACKENDS.values():
+          handle = backend.url_parse(client, **kwargs.pop('client_config',{}))
+          if handle:
+            print "MAKE",backend,"FROM",handle
+            return backend( handle, **kwargs )
+            #client = handle
+            #break
+
       # load a backend based on the name of the client module
       client_module = client.__module__.split('.')[0]
       backend = BACKENDS.get( client_module )
       if backend:
         return backend( client, **kwargs )
-      else:
-        raise ImportError("Unsupported or unknown client type %s", client_module)
+
+      raise ImportError("Unsupported or unknown client type %s", client_module)
     return object.__new__(cls, client, **kwargs)
 
   def __init__(self, client, **kwargs):
