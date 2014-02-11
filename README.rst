@@ -150,10 +150,6 @@ keyword arguments to the constructor for the client associated with the URL.
 If kairos implements any custom keyword arguments from ``client_config`` those
 are documented below.
 
-TODO: Move over documentation from torus about ``client_config``.
-
-TODO: More docs about URL formats
-
 Redis (redis://)
 ****************
 
@@ -184,6 +180,8 @@ Supported URL `formats <https://github.com/andymccurdy/redis-py/blob/master/redi
 
   redis://localhost
   redis://localhost/3
+
+All `supported <https://github.com/andymccurdy/redis-py/blob/master/redis/client.py#L361>`_ configuration options can be passed in ``client_config``.
 
 Mongo (mongodb://)
 ******************
@@ -218,7 +216,7 @@ Supported URL `formats <http://docs.mongodb.org/manual/reference/connection-stri
   mongodb://guest:host@localhost/authed_db
 
 
-URL configuration arguments are: ::
+All `supported <http://api.mongodb.org/python/current/api/pymongo/mongo_client.html>`_ configuration arguments can be passed in ``client_config``, in addition to: ::
 
   database
     The name of the database to use. Defaults to 'kairos'. Required if using
@@ -298,7 +296,7 @@ Supported URL `formats <http://docs.sqlalchemy.org/en/rel_0_9/core/engines.html#
   mysql+mysqldb://scott:tiger@localhost/foo
   oracle://scott:tiger@127.0.0.1:1521/sidname
 
-All `supported <http://docs.sqlalchemy.org/en/rel_0_9/core/engines.html#sqlalchemy.create_engine>`_ URL arguments can be used.
+All `supported <http://docs.sqlalchemy.org/en/rel_0_9/core/engines.html#sqlalchemy.create_engine>`_ constructor arguments can be used in ``client_config``.
 
 Cassandra (cassandra://, cql://)
 ********************************
@@ -361,6 +359,8 @@ Supported URL formats are: ::
   cql://
   cassandra://localhost:9160
   cassandra://localhost/database
+
+There are no special arguments supported in ``client_config``.
 
 kairos requires `cql <https://pypi.python.org/pypi/cql>`_ as it supports
 `CQL3 <https://cassandra.apache.org/doc/cql3/CQL.html>`_ and gevent. This 
