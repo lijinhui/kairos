@@ -223,23 +223,28 @@ class GregorianTime(object):
 
     return None
 
+class TimeseriesMeta(type):
+  '''
+  Meta class for URL parsing
+  '''
+  def __call__(cls, client, **kwargs):
+    if isinstance(client, (str,unicode)):
+      for backend in BACKENDS.values():
+        handle = backend.url_parse(client, **kwargs.pop('client_config',{}))
+        if handle:
+          client = handle
+          break
+    return type.__call__(cls, client, **kwargs)
+
 class Timeseries(object):
   '''
   Base class of all time series. Also acts as a factory to return the correct
   subclass if "type=" keyword argument supplied.
   '''
+  __metaclass__ = TimeseriesMeta
 
   def __new__(cls, client, **kwargs):
     if cls==Timeseries:
-      if isinstance(client, (str,unicode)):
-        for backend in BACKENDS.values():
-          handle = backend.url_parse(client, **kwargs.pop('client_config',{}))
-          if handle:
-            print "MAKE",backend,"FROM",handle
-            return backend( handle, **kwargs )
-            #client = handle
-            #break
-
       # load a backend based on the name of the client module
       client_module = client.__module__.split('.')[0]
       backend = BACKENDS.get( client_module )
