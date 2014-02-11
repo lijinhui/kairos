@@ -77,6 +77,7 @@ class SqlBackend(Timeseries):
         return SqlCount.__new__(SqlCount, *args, **kwargs)
       elif ttype=='gauge':
         return SqlGauge.__new__(SqlGauge, *args, **kwargs)
+      raise NotImplementedError("No implementation for %s types"%(ttype))
     return Timeseries.__new__(cls, *args, **kwargs)
 
   @classmethod

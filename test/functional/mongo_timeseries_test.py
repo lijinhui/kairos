@@ -18,11 +18,8 @@ class MongoApiTest(helpers.ApiHelper):
     super(MongoApiTest,self).setUp()
 
   def test_url_parse(self):
-    Timeseries('mongodb://localhost/kairos', type='series', intervals={
-      'minute': {
-        'step':60
-      }
-    })
+    assert_equals( 'MongoSeries', 
+      Timeseries('mongodb://localhost/kairos', type='series').__class__.__name__ )
 
 @unittest.skipUnless( os.environ.get('TEST_MONGO','true').lower()=='true', 'skipping mongo' )
 class MongoGregorianTest(helpers.GregorianHelper):

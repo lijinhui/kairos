@@ -20,7 +20,8 @@ class SqlApiTest(helpers.ApiHelper):
     super(SqlApiTest,self).setUp()
 
   def test_url_parse(self):
-    Timeseries('sqlite:///:memory:')
+    assert_equals( 'SqlSeries', 
+      Timeseries('sqlite:///:memory:', type='series').__class__.__name__ )
 
   def test_expire(self):
     cur_time = time.time()

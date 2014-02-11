@@ -31,6 +31,7 @@ class MongoBackend(Timeseries):
         return MongoCount.__new__(MongoCount, *args, **kwargs)
       elif ttype=='gauge':
         return MongoGauge.__new__(MongoGauge, *args, **kwargs)
+      raise NotImplementedError("No implementation for %s types"%(ttype))
     return Timeseries.__new__(cls, *args, **kwargs)
 
   def __init__(self, client, **kwargs):

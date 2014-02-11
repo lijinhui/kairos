@@ -31,6 +31,7 @@ class RedisBackend(Timeseries):
         return RedisGauge.__new__(RedisGauge, *args, **kwargs)
       elif ttype=='set':
         return RedisSet.__new__(RedisSet, *args, **kwargs)
+      raise NotImplementedError("No implementation for %s types"%(ttype))
     return Timeseries.__new__(cls, *args, **kwargs)
 
   def __init__(self, client, **kwargs):

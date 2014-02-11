@@ -18,7 +18,8 @@ class RedisApiTest(helpers.ApiHelper):
     super(RedisApiTest,self).setUp()
 
   def test_url_parse(self):
-    Timeseries('redis://')
+    assert_equals( 'RedisSeries', 
+      Timeseries('redis://', type='series').__class__.__name__ )
 
 @unittest.skipUnless( os.environ.get('TEST_REDIS','true').lower()=='true', 'skipping redis' )
 class RedisGregorianTest(helpers.GregorianHelper):

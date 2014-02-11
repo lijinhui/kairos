@@ -18,7 +18,8 @@ class CassandraApiTest(helpers.ApiHelper):
     super(CassandraApiTest,self).setUp()
 
   def test_url_parse(self):
-    print Timeseries( 'cql://localhost' )
+    assert_equals( 'CassandraSeries', 
+      Timeseries( 'cql://localhost', type='series' ).__class__.__name__ )
 
 # Not running gregorian tests because they run in the "far future" where long
 # TTLs are not supported.
